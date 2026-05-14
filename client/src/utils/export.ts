@@ -44,8 +44,8 @@ export const exportCsv = (nodes: CrawlNode[]): void => {
 };
 
 /**
- * Export the given crawl nodes and edges as a JSON file download
- * containing the full crawl graph data plus an exportedAt timestamp.
+ * Export the given crawl nodes and edges as a JSON file download,
+ * plus an exportedAt timestamp.
  * @param nodes - Crawl nodes to export
  * @param edges - Crawl edges to export
  */
