@@ -31,6 +31,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const nodes = useCrawlStore((s) => s.nodes);
   const edges = useCrawlStore((s) => s.edges);
   const startUrl = useCrawlStore((s) => s.startUrl);
+  const getFilteredNodes = useCrawlStore((s) => s.getFilteredNodes);
+  const getFilteredEdges = useCrawlStore((s) => s.getFilteredEdges);
 
   const [copied, setCopied] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
@@ -61,14 +63,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, [hasData, nodes, edges, startUrl, status]);
 
   const handleExportCsv = useCallback(() => {
-    exportCsv(Array.from(nodes.values()));
+    exportCsv(getFilteredNodes(false));
     setExportOpen(false);
-  }, [nodes]);
+  }, [getFilteredNodes]);
 
   const handleExportJson = useCallback(() => {
-    exportJson(Array.from(nodes.values()), edges);
+    exportJson(getFilteredNodes(false), getFilteredEdges());
     setExportOpen(false);
-  }, [nodes, edges]);
+  }, [getFilteredNodes, getFilteredEdges]);
 
   return (
     <nav className="flex items-center justify-between px-4 sm:px-6 h-14 border-b border-border bg-bg-primary z-50 relative">

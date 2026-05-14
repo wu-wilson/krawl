@@ -50,6 +50,11 @@ export const useUrlParams = (
       }
     }
 
+    const searchParam = params.get('q');
+    if (searchParam) {
+      updates.search = searchParam;
+    }
+
     if (Object.keys(updates).length > 0) {
       setFilter(updates);
     }
@@ -85,6 +90,13 @@ export const useUrlParams = (
       params.set('slow', String(filter.slowThreshold));
     } else {
       params.delete('slow');
+    }
+
+    const trimmedSearch = filter.search.trim();
+    if (trimmedSearch !== '') {
+      params.set('q', trimmedSearch);
+    } else {
+      params.delete('q');
     }
 
     const search = params.toString();
