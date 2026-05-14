@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 
-import { ReportExport } from './ReportExport';
-
+import { FilterChips } from '../FilterChips';
 import { STATUS_STYLES } from '../Graph/GraphNode';
 
 import { useCrawlStore } from '../../store/crawlStore';
@@ -29,20 +28,12 @@ export const ReportTable: React.FC<ReportTableProps> = ({ onSelectNode }) => {
 
   const [sortField, setSortField] = useState<SortField>('url');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
-  const [search, setSearch] = useState('');
 
   const filteredNodes = getFilteredNodes(false);
 
   const sorted = useMemo(() => {
-    let result = [...filteredNodes];
+    const result = [...filteredNodes];
 
-    // Search filter
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      result = result.filter((n) => n.url.toLowerCase().includes(q));
-    }
-
-    // Sort
     result.sort((a, b) => {
       let cmp = 0;
       switch (sortField) {
@@ -66,7 +57,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({ onSelectNode }) => {
     });
 
     return result;
-  }, [filteredNodes, sortField, sortDir, search]);
+  }, [filteredNodes, sortField, sortDir]);
 
   const handleSort = useCallback((field: SortField) => {
     if (sortField === field) {
@@ -112,19 +103,10 @@ export const ReportTable: React.FC<ReportTableProps> = ({ onSelectNode }) => {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Search + Export */}
-      <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 border-b border-border">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search URLs..."
-          className="flex-1 max-w-sm px-3 py-2 text-sm rounded-md bg-bg-secondary border border-border
-            text-text-primary placeholder:text-text-tertiary
-            focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand
-            transition-all duration-150 ease-out"
-        />
-        <ReportExport />
+      {/* Toolbar: FilterChips owns both the chip filters and the search input */}
+      <div className="flex items-center px-4 sm:px-6 py-3 border-b border-border
+        overflow-x-auto scrollbar-hide">
+        <FilterChips />
       </div>
 
       {/* Desktop table */}
@@ -156,7 +138,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({ onSelectNode }) => {
             </tr>
           </thead>
           <tbody>
-            {sorted.map((node, i) => {
+            {sorted.map((node) => {
               const style = STATUS_STYLES[node.status];
               return (
                 <tr
@@ -164,7 +146,6 @@ export const ReportTable: React.FC<ReportTableProps> = ({ onSelectNode }) => {
                   onClick={() => handleRowClick(node.id)}
                   className="border-b border-border-subtle hover:bg-surface-hover cursor-pointer
                     transition-colors duration-100"
-                  style={{ animationDelay: `${Math.min(i * 20, 400)}ms` }}
                 >
                   <td className="px-4 py-2.5 text-sm font-mono text-text-primary max-w-xs truncate">
                     {getDisplayUrl(node.url)}

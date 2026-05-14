@@ -7,6 +7,8 @@ export interface FilterState {
   statusFilter: 'all' | 'broken' | 'redirects' | 'slow';
   typeFilter: 'all' | 'pages' | 'scripts' | 'styles' | 'images';
   slowThreshold: number;
+  /** Case-insensitive URL substring filter. Empty string = no search filter. */
+  search: string;
 }
 
 /** Computed crawl statistics */
@@ -16,7 +18,6 @@ export interface CrawlStats {
   redirects: number;
   broken: number;
   avgResponseTime: number;
-  elapsed: number;
 }
 
 /** Crawl state store */
@@ -50,6 +51,7 @@ const DEFAULT_FILTER: FilterState = {
   statusFilter: 'all',
   typeFilter: 'all',
   slowThreshold: 1000,
+  search: '',
 };
 
 /**
@@ -190,9 +192,10 @@ export const useCrawlStore = create<CrawlStore>((set, get) => {
 
   getFilteredNodes: (includeAncestors = true) => {
     const { nodes, filter } = get();
+    const searchQuery = filter.search.trim().toLowerCase();
 
     // No filter active — return all
-    if (filter.statusFilter === 'all' && filter.typeFilter === 'all') {
+    if (filter.statusFilter === 'all' && filter.typeFilter === 'all' && searchQuery === '') {
       return Array.from(nodes.values());
     }
 
@@ -227,6 +230,10 @@ export const useCrawlStore = create<CrawlStore>((set, get) => {
             if (node.resourceType !== 'image') return false;
             break;
         }
+      }
+
+      if (searchQuery !== '' && !node.url.toLowerCase().includes(searchQuery)) {
+        return false;
       }
 
       return true;
@@ -269,7 +276,7 @@ export const useCrawlStore = create<CrawlStore>((set, get) => {
   },
 
   getStats: () => {
-    const { nodes, startTime } = get();
+    const { nodes } = get();
     const allNodes = Array.from(nodes.values());
 
     let healthy = 0;
@@ -302,7 +309,6 @@ export const useCrawlStore = create<CrawlStore>((set, get) => {
       redirects,
       broken,
       avgResponseTime: timeCount > 0 ? totalTime / timeCount : 0,
-      elapsed: startTime ? Math.floor((Date.now() - startTime) / 1000) : 0,
     };
   },
   };

@@ -4,28 +4,26 @@ import { DURATION } from '../../utils/animations';
 
 interface StatCardProps {
   /** Label for the stat */
-  label: string;
+  label: React.ReactNode;
   /** Numeric value to display */
   value: number;
   /** Color class for the value */
   colorClass?: string;
   /** Optional suffix (e.g., "ms") */
   suffix?: string;
-  /** Whether to use monospace font */
-  mono?: boolean;
 }
 
 /**
- * Individual stat display with animated number roll-up
+ * Inline stat readout — number alongside a label, with an eased number roll-up
+ * when the value changes. Designed for toolbar / floating HUD contexts.
  * @param props - Stat configuration
- * @returns Animated stat card
+ * @returns Animated stat element
  */
 export const StatCard: React.FC<StatCardProps> = ({
   label,
   value,
   colorClass = 'text-text-primary',
   suffix = '',
-  mono = true,
 }) => {
   const [displayValue, setDisplayValue] = useState(value);
   const animRef = useRef<number | null>(null);
@@ -63,14 +61,12 @@ export const StatCard: React.FC<StatCardProps> = ({
   }, [value]);
 
   return (
-    <div className="flex flex-col items-center gap-0.5 px-2.5 sm:px-3 py-1.5 sm:py-2 shrink-0">
-      <span
-        className={`text-base sm:text-lg font-semibold tabular-nums ${colorClass} ${mono ? 'font-mono' : ''}`}
-      >
+    <div className="flex items-baseline gap-1 shrink-0 whitespace-nowrap">
+      <span className={`text-sm font-semibold font-mono tabular-nums ${colorClass}`}>
         {displayValue}
-        {suffix && <span className="text-xs text-text-tertiary ml-0.5">{suffix}</span>}
+        {suffix && <span className="text-[11px] text-text-tertiary ml-0.5">{suffix}</span>}
       </span>
-      <span className="text-[11px] sm:text-xs text-text-tertiary whitespace-nowrap">{label}</span>
+      <span className="text-xs text-text-tertiary">{label}</span>
     </div>
   );
 };

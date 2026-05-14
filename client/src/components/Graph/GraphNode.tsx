@@ -28,21 +28,3 @@ export const STATUS_STYLES: Record<NodeStatus, { bg: string; text: string; label
 export const getNodeRadius = (inboundCount: number): number => {
   return Math.max(4, Math.min(16, 4 + inboundCount * 1.5));
 };
-
-/**
- * Get status label text for accessibility
- * @param status - Node status
- * @param httpStatus - HTTP status code
- * @returns Human-readable status label
- */
-export const getStatusLabel = (status: NodeStatus, httpStatus: number | null): string => {
-  if (httpStatus) {
-    const labels: Record<string, string> = {
-      healthy: `${httpStatus} OK`,
-      redirect: `${httpStatus} Redirect`,
-      broken: `${httpStatus} Broken`,
-    };
-    return labels[status] || `${httpStatus}`;
-  }
-  return status === 'pending' ? 'Fetching...' : status === 'queued' ? 'Queued' : status;
-};

@@ -81,7 +81,7 @@ export const useUrlParams = (
       params.delete('type');
     }
 
-    if (filter.statusFilter === 'slow' && filter.slowThreshold !== 1000) {
+    if (filter.slowThreshold !== 1000) {
       params.set('slow', String(filter.slowThreshold));
     } else {
       params.delete('slow');

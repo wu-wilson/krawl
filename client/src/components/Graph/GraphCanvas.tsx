@@ -1,12 +1,16 @@
 import React from 'react';
 
+import { FilterChips } from '../FilterChips';
+
 import { useGraph } from '../../hooks/useGraph';
 
 import { useCrawlStore } from '../../store/crawlStore';
 
 /**
- * Main force-directed graph rendered on Canvas
- * @returns Canvas element with the crawl graph visualization
+ * Force-directed graph rendered on Canvas, with a floating filter pill overlaid
+ * on the top-left of the canvas. Live stats and crawl controls live in the
+ * persistent bottom `StatusBar` — not here — so the canvas reads as the hero.
+ * @returns Canvas + floating filter overlay
  */
 export const GraphCanvas: React.FC = () => {
   const {
@@ -49,6 +53,8 @@ export const GraphCanvas: React.FC = () => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       />
+
+      {/* Empty / discovering state */}
       {nodes.size === 0 && status !== 'idle' && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center gap-3">
@@ -57,6 +63,17 @@ export const GraphCanvas: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Floating filter pill — top-left */}
+      <div
+        className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20
+          flex items-center px-3 py-2
+          rounded-xl border border-border bg-bg-primary/60 backdrop-blur-md
+          max-w-[calc(100%-1.5rem)] sm:max-w-[calc(100%-2rem)]
+          overflow-x-auto scrollbar-hide"
+      >
+        <FilterChips />
+      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ const CANVAS_COLORS = {
   grid: 'rgba(255, 255, 255, 0.025)',
   edgeDefault: 'rgba(255, 255, 255, 0.1)',
   edgeHighlight: 'rgba(212, 160, 23, 0.4)',
+  brand: '#d4a017',
   glow: 0.35,
 };
 
@@ -376,7 +377,7 @@ export const useGraph = (): UseGraphReturn => {
           const dotY = sy + (ty - sy) * dotT;
           ctx.beginPath();
           ctx.arc(dotX, dotY, 2, 0, Math.PI * 2);
-          ctx.fillStyle = '#d4a017';
+          ctx.fillStyle = CANVAS_COLORS.brand;
           ctx.fill();
         }
       }
@@ -430,7 +431,7 @@ export const useGraph = (): UseGraphReturn => {
         if (isSelected || simNode.crawlNode.depth === 0) {
           ctx.beginPath();
           ctx.arc(x, y, drawRadius + 3, 0, Math.PI * 2);
-          ctx.strokeStyle = '#d4a017';
+          ctx.strokeStyle = CANVAS_COLORS.brand;
           ctx.lineWidth = 2;
           ctx.stroke();
         }
@@ -620,6 +621,5 @@ export const useGraph = (): UseGraphReturn => {
 };
 
 /** Spring easing with ~15% overshoot */
-function easeSpring(t: number): number {
-  return 1 - Math.pow(1 - t, 3) * Math.cos(t * Math.PI * 0.5) * (1 - t);
-}
+const easeSpring = (t: number): number =>
+  1 - Math.pow(1 - t, 3) * Math.cos(t * Math.PI * 0.5) * (1 - t);

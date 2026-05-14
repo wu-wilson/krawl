@@ -23,7 +23,7 @@ Krawl is a visual website crawler and health scanner. The user enters a URL, the
 
 - Write test files or install testing libraries.
 - Use `any`, default exports, SVG for the graph, `dark:` prefixes, or a theme toggle.
-- Use inline styles for static values — use Tailwind classes instead. Inline `style={{...}}` is reserved for values Tailwind can't statically extract: JS-derived durations (`DURATION.fast` from `utils/animations.ts`), prop-derived sizes, and dynamic animation delays.
+- Use inline styles for static values — use Tailwind classes instead. Inline `style={{...}}` is reserved for values Tailwind can't statically extract: JS-derived durations (`DURATION.fast` from `utils/animations.ts`), prop-derived sizes, and animation delays.
 - Add a database or authentication to the server.
 - Allow horizontal overflow on any screen.
 - Show blank screens — every state (loading, empty, error) must have a designed UI.

@@ -6,6 +6,7 @@ import { TIMEOUT_MS, MAX_BODY_SIZE, USER_AGENT } from './constants';
  * GET /fetch?url=<target> — Fetches the full page content through the proxy
  * @param req - Express request with url query parameter
  * @param res - Express response
+ * @returns Resolves once the JSON response has been sent
  */
 export const fetchHandler = async (req: Request, res: Response): Promise<void> => {
   const targetUrl = req.query.url as string;

@@ -2,8 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 
 import { LandingPage } from './components/Landing/LandingPage';
 import { Navbar } from './components/Navbar';
-import { StatsBar } from './components/Dashboard/StatsBar';
-import { FilterBar } from './components/FilterBar';
+import { StatusBar } from './components/StatusBar';
 import { GraphCanvas } from './components/Graph/GraphCanvas';
 import { ReportTable } from './components/Report/ReportTable';
 import { NodeDetail } from './components/Sidebar/NodeDetail';
@@ -117,8 +116,6 @@ export const App: React.FC = () => {
         onViewChange={handleViewChange}
         onLogoClick={handleLogoClick}
       />
-      <StatsBar />
-      <FilterBar />
       <div className="flex-1 relative overflow-hidden">
         <div
           className={`absolute inset-0 transition-opacity duration-200 ${
@@ -136,6 +133,7 @@ export const App: React.FC = () => {
         </div>
         <NodeDetail />
       </div>
+      <StatusBar />
     </div>
   );
 };

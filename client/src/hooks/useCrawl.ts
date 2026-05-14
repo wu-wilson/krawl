@@ -21,7 +21,6 @@ export const useCrawl = (): UseCrawlReturn => {
   const addEdge = useCrawlStore((s) => s.addEdge);
   const setStatus = useCrawlStore((s) => s.setStatus);
   const resetCrawl = useCrawlStore((s) => s.resetCrawl);
-  const store = useCrawlStore;
 
   const crawlerRef = useRef<ReturnType<typeof createCrawler> | null>(null);
 
@@ -48,9 +47,6 @@ export const useCrawl = (): UseCrawlReturn => {
         onEdgeDiscovered: (edge: CrawlEdge) => {
           addEdge(edge);
         },
-        onError: (error: string) => {
-          console.error('[Krawl]', error);
-        },
         onComplete: () => {
           setStatus('complete');
         },
@@ -60,7 +56,7 @@ export const useCrawl = (): UseCrawlReturn => {
     crawlerRef.current = crawler;
 
     // Wire pause/resume/stop to store
-    const unsub1 = store.subscribe((state, prev) => {
+    const unsub1 = useCrawlStore.subscribe((state, prev) => {
       if (state.status === 'paused' && prev.status === 'crawling') {
         crawler.pause();
       } else if (state.status === 'crawling' && prev.status === 'paused') {

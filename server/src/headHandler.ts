@@ -6,6 +6,7 @@ import { TIMEOUT_MS, USER_AGENT } from './constants';
  * GET /head?url=<target> — Performs a HEAD request for status check without body
  * @param req - Express request with url query parameter
  * @param res - Express response
+ * @returns Resolves once the JSON response has been sent
  */
 export const headHandler = async (req: Request, res: Response): Promise<void> => {
   const targetUrl = req.query.url as string;

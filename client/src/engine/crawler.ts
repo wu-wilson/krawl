@@ -20,8 +20,6 @@ export interface CrawlerCallbacks {
   onNodeUpdated: (id: string, updates: Partial<CrawlNode>) => void;
   /** Called when a new edge is discovered */
   onEdgeDiscovered: (edge: CrawlEdge) => void;
-  /** Called on non-fatal errors */
-  onError: (error: string) => void;
   /** Called when the crawl completes */
   onComplete: () => void;
 }
@@ -53,7 +51,7 @@ export const createCrawler = (
 ): CrawlerInstance => {
   let status: CrawlStatus = 'idle';
   const visited = new Set<string>();
-  const queue: Array<{ url: string; depth: number; parentId: string | null; element: string; resourceType: ResourceType }> = [];
+  const queue: Array<{ url: string; depth: number; resourceType: ResourceType }> = [];
   let totalDiscovered = 0;
   let abortController = new AbortController();
   let pausePromise: { resolve: () => void } | null = null;
@@ -64,8 +62,6 @@ export const createCrawler = (
   const classifyStatus = (httpStatus: number): NodeStatus => {
     if (httpStatus >= 200 && httpStatus < 300) return 'healthy';
     if (httpStatus >= 300 && httpStatus < 400) return 'redirect';
-    if (httpStatus >= 400 && httpStatus < 500) return 'broken';
-    if (httpStatus >= 500) return 'broken';
     return 'broken';
   };
 
@@ -105,8 +101,6 @@ export const createCrawler = (
   const processUrl = async (
     url: string,
     depth: number,
-    _parentId: string | null,
-    _element: string,
     resourceType: ResourceType,
     baseUrl: string
   ): Promise<void> => {
@@ -187,8 +181,6 @@ export const createCrawler = (
             queue.push({
               url: link.url,
               depth: depth + 1,
-              parentId: id,
-              element: link.element,
               resourceType: link.resourceType,
             });
           }
@@ -230,7 +222,7 @@ export const createCrawler = (
       while (queue.length > 0 && inFlight.size < config.maxConcurrent && status === 'crawling') {
         const item = queue.shift()!;
 
-        const task = processUrl(item.url, item.depth, item.parentId, item.element, item.resourceType, baseUrl)
+        const task = processUrl(item.url, item.depth, item.resourceType, baseUrl)
           .finally(() => {
             inFlight.delete(task);
           });
@@ -295,8 +287,6 @@ export const createCrawler = (
       queue.push({
         url: normalized,
         depth: 0,
-        parentId: null,
-        element: 'root',
         resourceType: 'page',
       });
 
