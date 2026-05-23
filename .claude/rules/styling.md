@@ -6,6 +6,8 @@ paths:
 
 # Styling
 
+No UI component libraries. Build all components from scratch with Tailwind.
+
 ## Theming
 - All colors must use CSS custom properties via Tailwind semantic tokens. Never hardcode hex values in component files. The one exception is Canvas rendering code, which can't access CSS variables — see `components/Graph/GraphNode.tsx` for node status colors and `hooks/useGraph.ts` for Canvas background, grid, and edge colors.
 - Dark mode only — no theme toggle. CSS custom properties are defined on `:root`. Never use Tailwind `dark:` prefixes or `data-theme` attributes.
@@ -25,4 +27,3 @@ paths:
 - Prefer `transform` and `opacity` for animations — they are GPU-accelerated and won't trigger layout recalculation.
 - Use CSS `@keyframes` for continuous or looping animations (spider logo legs, pulsing nodes). Use CSS `transition` for state-change animations (hover, filter toggle). Use `requestAnimationFrame` for Canvas rendering and for animating values CSS can't transition — e.g., the eased number rollup in `StatCard.tsx`.
 - Every animation should feel smooth and physically plausible — things ease in and out, never snap.
-- No UI component libraries. Build all components from scratch with Tailwind.
