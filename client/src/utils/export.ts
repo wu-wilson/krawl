@@ -23,7 +23,7 @@ const escapeCsvValue = (value: string): string => {
 
 /**
  * Export the given crawl nodes as a CSV file download with columns:
- * URL, Status, HTTP Code, Response Time, Type, Depth, Error.
+ * URL, Status, HTTP Code, Response Time (ms), Type, Depth, Error.
  * @param nodes - Crawl nodes to export
  */
 export const exportCsv = (nodes: CrawlNode[]): void => {

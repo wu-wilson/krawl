@@ -11,7 +11,7 @@ The crawl engine (`client/src/engine/`) is a queue-based recursive web crawler t
 **Modules:**
 - `crawler.ts` — Manages the crawl lifecycle: URL queue, concurrency control, depth tracking, and domain scope.
 - `parser.ts` — Extracts URLs from HTML using the browser's native DOMParser. Returns typed link objects.
-- `urlUtils.ts` — Normalizes URLs for deduplication: lowercases hostnames, strips default ports, removes fragments and trailing slashes, sorts query parameters, and strips tracking params (`utm_*`, `fbclid`, `gclid`, `mc_cid`, `mc_eid`).
+- `urlUtils.ts` — Normalizes URLs for deduplication: lowercases hostnames, strips default ports, removes fragments and trailing slashes, sorts query parameters, and strips a fixed set of tracking params (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, `fbclid`, `gclid`, `mc_cid`, `mc_eid` — exact match, no wildcard).
 - `types.ts` — Shared TypeScript types and interfaces: `CrawlNode`, `CrawlEdge`, `CrawlConfig`, `CrawlStatus`, `NodeStatus`, `ResourceType`, `ProxyFetchResponse`, `ProxyHeadResponse`.
 
 **Flow:**

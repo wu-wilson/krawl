@@ -7,7 +7,7 @@ Krawl is a visual website crawler and health scanner. The user enters a URL, the
 ## Architecture
 
 - **client/** — React 18 + Vite + TypeScript. Tailwind CSS v3. D3.js force simulation rendered on HTML5 Canvas. Zustand for state management. All crawl logic runs client-side.
-- **server/** — Express + TypeScript CORS proxy. Two endpoints: `/fetch` (full page with body) and `/head` (status check only). Stateless — no database, no auth.
+- **server/** — Express + TypeScript CORS proxy. Two proxy endpoints — `/fetch` (full page with body) and `/head` (status check only) — plus a `/` health check that returns `{ status: 'ok', service: 'krawl-proxy' }`. Stateless — no database, no auth.
 
 ## Key Decisions
 

@@ -23,6 +23,6 @@ paths:
 ## Animation
 - Use named duration constants from `utils/animations.ts` (`DURATION.fast`, `DURATION.normal`, etc.) for all programmatic transition durations. CSS easing values (e.g., `cubic-bezier(0.16, 1, 0.3, 1)`) are written inline where used.
 - Prefer `transform` and `opacity` for animations — they are GPU-accelerated and won't trigger layout recalculation.
-- Use CSS `@keyframes` for continuous or looping animations (spider logo legs, pulsing nodes). Use CSS `transition` for state-change animations (hover, filter toggle). Use `requestAnimationFrame` only for Canvas rendering.
+- Use CSS `@keyframes` for continuous or looping animations (spider logo legs, pulsing nodes). Use CSS `transition` for state-change animations (hover, filter toggle). Use `requestAnimationFrame` for Canvas rendering and for animating values CSS can't transition — e.g., the eased number rollup in `StatCard.tsx`.
 - Every animation should feel smooth and physically plausible — things ease in and out, never snap.
 - No UI component libraries. Build all components from scratch with Tailwind.
