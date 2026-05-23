@@ -3,7 +3,8 @@ import React from 'react';
 import { useCrawlStore } from '../store/crawlStore';
 
 /**
- * Pause/Stop crawl controls during an active crawl, with a status pill when idle or complete.
+ * Pause/Stop crawl controls during an active crawl, with a "Complete" pill once the crawl finishes.
+ * Renders nothing when idle.
  * @returns Crawl control buttons or status indicator
  */
 export const CrawlControls: React.FC = () => {

@@ -13,7 +13,7 @@ import type {
 } from './types';
 
 /** Callbacks emitted by the crawler during operation */
-export interface CrawlerCallbacks {
+interface CrawlerCallbacks {
   /** Called when a new node is discovered */
   onNodeDiscovered: (node: CrawlNode) => void;
   /** Called when a node's data is updated (status, response, etc.) */

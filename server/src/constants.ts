@@ -6,3 +6,6 @@ export const MAX_BODY_SIZE = parseInt(process.env.MAX_BODY_SIZE_BYTES || '524288
 
 /** User-Agent header sent with all outbound requests */
 export const USER_AGENT = 'Krawl/1.0 (site health scanner)';
+
+/** Maximum number of redirects followed per proxy request */
+export const MAX_REDIRECTS = 5;

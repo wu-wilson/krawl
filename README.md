@@ -84,4 +84,4 @@ All variables ship with working defaults — `./launch.sh` runs on a fresh clone
 | `REQUEST_TIMEOUT_MS`    | `10000`   | Per-request timeout for outbound fetches, in milliseconds. The client mirrors this in `crawler.ts` — the two should stay in sync. |
 | `MAX_BODY_SIZE_BYTES`   | `5242880` | Max response body size accepted from a target site, in bytes (5 MB). Larger responses are truncated.                              |
 | `RATE_LIMIT_PER_MINUTE` | `1000`    | Max requests per IP per minute. Excess requests receive a `429`.                                                                  |
-| `ALLOWED_ORIGINS`       | `*`       | Comma-separated list of allowed CORS origins. In production, should be tightened from `*` to the deployed client's origin.        |
+| `ALLOWED_ORIGINS`       | `*`       | Comma-separated list of allowed CORS origins. Set to `https://krawl.dev` in production.                                           |

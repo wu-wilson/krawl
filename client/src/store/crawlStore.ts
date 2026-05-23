@@ -12,7 +12,7 @@ export interface FilterState {
 }
 
 /** Computed crawl statistics */
-export interface CrawlStats {
+interface CrawlStats {
   total: number;
   healthy: number;
   redirects: number;
@@ -30,7 +30,6 @@ interface CrawlStore {
   startUrl: string | null;
   startTime: number | null;
 
-  startCrawl: (url: string) => void;
   pauseCrawl: () => void;
   resumeCrawl: () => void;
   stopCrawl: () => void;
@@ -94,14 +93,6 @@ export const useCrawlStore = create<CrawlStore>((set, get) => {
   filter: { ...DEFAULT_FILTER },
   startUrl: null,
   startTime: null,
-
-  startCrawl: (url: string) => {
-    set({
-      status: 'crawling',
-      startUrl: url,
-      startTime: Date.now(),
-    });
-  },
 
   pauseCrawl: () => {
     set({ status: 'paused' });
