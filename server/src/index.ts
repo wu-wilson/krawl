@@ -13,6 +13,9 @@ import { headHandler } from './headHandler';
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
 
+// Resolves req.ip to the client behind Railway's proxy.
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(createCorsMiddleware());
 app.use(requestLogger);
