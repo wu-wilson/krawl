@@ -583,11 +583,24 @@ export const useGraph = (): UseGraphReturn => {
       dragRef.current.lastY = touch.clientY;
       needsRedrawRef.current = true;
     } else if (e.touches.length === 2 && pinchRef.current.active) {
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const t0x = e.touches[0].clientX - rect.left;
+      const t0y = e.touches[0].clientY - rect.top;
+      const t1x = e.touches[1].clientX - rect.left;
+      const t1y = e.touches[1].clientY - rect.top;
+      const dx = t0x - t1x;
+      const dy = t0y - t1y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      const scale = dist / pinchRef.current.initialDist;
-      transformRef.current.k = Math.max(0.1, Math.min(5, pinchRef.current.initialK * scale));
+      const mx = (t0x + t1x) / 2;
+      const my = (t0y + t1y) / 2;
+
+      const newK = Math.max(0.1, Math.min(5, pinchRef.current.initialK * (dist / pinchRef.current.initialDist)));
+      const ratio = newK / transformRef.current.k;
+      transformRef.current.x = mx - ratio * (mx - transformRef.current.x);
+      transformRef.current.y = my - ratio * (my - transformRef.current.y);
+      transformRef.current.k = newK;
       needsRedrawRef.current = true;
     }
   }, []);
@@ -604,6 +617,14 @@ export const useGraph = (): UseGraphReturn => {
         }
       }
       dragRef.current.active = false;
+      pinchRef.current.active = false;
+    } else if (e.touches.length === 1 && pinchRef.current.active) {
+      // On 2→1 finger lift: re-seat dragRef to the remaining finger so the next pan doesn't jump from stale coords.
+      const touch = e.touches[0];
+      dragRef.current.startX = touch.clientX;
+      dragRef.current.startY = touch.clientY;
+      dragRef.current.lastX = touch.clientX;
+      dragRef.current.lastY = touch.clientY;
       pinchRef.current.active = false;
     }
   }, [getNodeAtPosition, selectNode]);
