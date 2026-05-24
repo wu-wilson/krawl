@@ -4,7 +4,6 @@ import { SpiderLogo } from './SpiderLogo';
 
 import { useCrawlStore } from '../store/crawlStore';
 
-import { compressState } from '../utils/sharing';
 import { exportCsv, exportJson } from '../utils/export';
 import { DURATION } from '../utils/animations';
 
@@ -43,16 +42,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const handleShare = useCallback(async () => {
     if (!hasData || !startUrl) return;
-    const nodesArr = Array.from(nodes.values());
-    const compressed = compressState(nodesArr, edges, startUrl, status);
-    const search = window.location.search;
-    const url = `${window.location.origin}${window.location.pathname}${search}#data=${compressed}`;
+    const params = new URLSearchParams(window.location.search);
+    params.set('u', startUrl);
+    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
+      const nodesArr = Array.from(nodes.values());
       const blob = new Blob([JSON.stringify({ nodes: nodesArr, edges, startUrl })], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -60,7 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       a.click();
       URL.revokeObjectURL(a.href);
     }
-  }, [hasData, nodes, edges, startUrl, status]);
+  }, [hasData, nodes, edges, startUrl]);
 
   const handleExportCsv = useCallback(() => {
     exportCsv(getFilteredNodes(false));

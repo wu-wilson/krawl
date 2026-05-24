@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "d3": "^7.9.0",
-    "lz-string": "^1.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "serve": "^14.2.4",
@@ -18,7 +17,6 @@
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",
-    "@types/lz-string": "^1.5.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

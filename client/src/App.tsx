@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 
 import { LandingPage } from './components/Landing/LandingPage';
 import { Navbar } from './components/Navbar';
@@ -9,11 +9,7 @@ import { NodeDetail } from './components/Sidebar/NodeDetail';
 
 import { useCrawl } from './hooks/useCrawl';
 import { useUrlParams } from './hooks/useUrlParams';
-import { useCrawlStore } from './store/crawlStore';
-
-import { compressState, decompressState } from './utils/sharing';
-
-import type { CrawlNode, CrawlEdge } from './engine/types';
+import { useCrawlStore, DEFAULT_FILTER } from './store/crawlStore';
 
 /**
  * Root application component
@@ -21,66 +17,39 @@ import type { CrawlNode, CrawlEdge } from './engine/types';
  */
 export const App: React.FC = () => {
   const status = useCrawlStore((s) => s.status);
-  const addNode = useCrawlStore((s) => s.addNode);
-  const addEdge = useCrawlStore((s) => s.addEdge);
-  const setStatus = useCrawlStore((s) => s.setStatus);
   const [view, setView] = React.useState<'graph' | 'report'>('graph');
   const [isTransitioning, setIsTransitioning] = React.useState(false);
   const [showLanding, setShowLanding] = React.useState(true);
-  const [isSharedView, setIsSharedView] = React.useState(false);
 
   const resetCrawl = useCrawlStore((s) => s.resetCrawl);
   const stopCrawl = useCrawlStore((s) => s.stopCrawl);
+  const setFilter = useCrawlStore((s) => s.setFilter);
   const { startCrawl } = useCrawl();
 
   useUrlParams(view, setView);
 
-  const nodes = useCrawlStore((s) => s.nodes);
-  const edges = useCrawlStore((s) => s.edges);
-  const startUrl = useCrawlStore((s) => s.startUrl);
-
-  // Write compressed data to hash when crawl completes
+  // Auto-start crawl when a shared link with ?u= is opened.
+  // Guard makes "run exactly once per mount" explicit even if `startCrawl` changes identity.
+  const autoStartedRef = useRef(false);
   useEffect(() => {
-    if (status !== 'idle' && status !== 'crawling' && nodes.size > 0 && startUrl && !isSharedView) {
-      const snapshotNodes = Array.from(nodes.values()).map((n) => {
-        if (n.status === 'queued' || n.status === 'pending') {
-          return { ...n, status: 'broken' as const, error: 'Crawl stopped' };
-        }
-        return n;
-      });
-      const compressed = compressState(snapshotNodes, edges, startUrl, status);
-      const newHash = `#data=${compressed}`;
-      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${newHash}`);
+    if (autoStartedRef.current) return;
+    autoStartedRef.current = true;
+    const params = new URLSearchParams(window.location.search);
+    const seed = params.get('u');
+    if (seed) {
+      setShowLanding(false);
+      startCrawl(seed);
     }
-  }, [status, nodes, edges, startUrl, isSharedView]);
-
-  // Load shared data from hash on mount
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.startsWith('#data=')) {
-      const data = hash.slice(6);
-      const result = decompressState(data);
-      if (result) {
-        result.nodes.forEach((node: CrawlNode) => {
-          if (node.status === 'queued' || node.status === 'pending') {
-            node.status = 'broken';
-            node.error = 'Crawl stopped';
-          }
-          addNode(node);
-        });
-        result.edges.forEach((edge: CrawlEdge) => addEdge(edge));
-        setStatus('complete');
-        setIsSharedView(true);
-        setShowLanding(false);
-      }
-    }
-  }, [addNode, addEdge, setStatus]);
+  }, [startCrawl]);
 
   const handleStartCrawl = useCallback((url: string) => {
     setIsTransitioning(true);
     setTimeout(() => {
       setShowLanding(false);
       startCrawl(url);
+      const params = new URLSearchParams(window.location.search);
+      params.set('u', url);
+      window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
       setTimeout(() => {
         setIsTransitioning(false);
       }, 300);
@@ -94,13 +63,13 @@ export const App: React.FC = () => {
   const handleLogoClick = useCallback(() => {
     stopCrawl();
     resetCrawl();
+    setFilter(DEFAULT_FILTER);
     setShowLanding(true);
-    setIsSharedView(false);
     setView('graph');
     window.history.replaceState(null, '', window.location.pathname);
-  }, [stopCrawl, resetCrawl]);
+  }, [stopCrawl, resetCrawl, setFilter]);
 
-  if (showLanding && status === 'idle' && !isSharedView) {
+  if (showLanding && status === 'idle') {
     return (
       <LandingPage
         onStartCrawl={handleStartCrawl}

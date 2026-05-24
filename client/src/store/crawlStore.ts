@@ -46,7 +46,8 @@ interface CrawlStore {
   getStats: () => CrawlStats;
 }
 
-const DEFAULT_FILTER: FilterState = {
+/** Default filter state — "show everything, no search". Used to reset filters via `setFilter(DEFAULT_FILTER)`. */
+export const DEFAULT_FILTER: FilterState = {
   statusFilter: 'all',
   typeFilter: 'all',
   slowThreshold: 1000,
@@ -116,7 +117,6 @@ export const useCrawlStore = create<CrawlStore>((set, get) => {
       nodes: new Map(),
       edges: [],
       selectedNodeId: null,
-      filter: { ...DEFAULT_FILTER },
       startUrl: null,
       startTime: null,
     });

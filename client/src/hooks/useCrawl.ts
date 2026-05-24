@@ -7,7 +7,7 @@ import { createCrawler } from '../engine/crawler';
 import type { CrawlNode, CrawlEdge } from '../engine/types';
 
 interface UseCrawlReturn {
-  /** Start a crawl for the given URL */
+  /** Start a crawl for the given URL. Tears down any in-flight crawl first, so it's safe to call repeatedly. */
   startCrawl: (url: string) => void;
 }
 
@@ -23,11 +23,22 @@ export const useCrawl = (): UseCrawlReturn => {
   const resetCrawl = useCrawlStore((s) => s.resetCrawl);
 
   const crawlerRef = useRef<ReturnType<typeof createCrawler> | null>(null);
+  const teardownRef = useRef<(() => void) | null>(null);
 
   const startCrawl = useCallback((url: string) => {
+    // Tear down any in-flight crawler from a prior call so we never have two
+    // running against the same store at once.
+    teardownRef.current?.();
+    teardownRef.current = null;
+
     resetCrawl();
 
     const proxyUrl = import.meta.env.VITE_PROXY_URL || 'http://localhost:3001';
+
+    // `alive` gates every store write from this crawler. Teardown flips it
+    // false so leftover async work (aborted fetches, queue cleanup) can't
+    // poison the next crawler's nodes when URLs collide.
+    let alive = true;
 
     const crawler = createCrawler(
       {
@@ -39,16 +50,16 @@ export const useCrawl = (): UseCrawlReturn => {
       proxyUrl,
       {
         onNodeDiscovered: (node: CrawlNode) => {
-          addNode(node);
+          if (alive) addNode(node);
         },
         onNodeUpdated: (id: string, updates: Partial<CrawlNode>) => {
-          updateNode(id, updates);
+          if (alive) updateNode(id, updates);
         },
         onEdgeDiscovered: (edge: CrawlEdge) => {
-          addEdge(edge);
+          if (alive) addEdge(edge);
         },
         onComplete: () => {
-          setStatus('complete');
+          if (alive) setStatus('complete');
         },
       }
     );
@@ -66,7 +77,12 @@ export const useCrawl = (): UseCrawlReturn => {
       }
     });
 
-    // Store the unsub for cleanup
+    teardownRef.current = () => {
+      alive = false;
+      crawler.stop();
+      unsub1();
+    };
+
     useCrawlStore.setState({
       stopCrawl: () => {
         crawler.stop();
