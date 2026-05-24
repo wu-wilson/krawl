@@ -12,14 +12,15 @@ import { StatsSummary } from './StatsSummary';
  */
 export const StatusBar: React.FC = () => {
   return (
-    <div
-      className="flex items-center gap-3 px-4 sm:px-6 h-11 border-t border-border bg-bg-primary
-        overflow-x-auto scrollbar-hide"
-    >
-      <StatsSummary />
-      <div className="ml-auto flex items-center gap-3 flex-shrink-0 pl-3">
-        <FilteredCount />
-        <CrawlControls />
+    <div className="pb-[env(safe-area-inset-bottom)] border-t border-border bg-bg-primary">
+      <div
+        className="flex items-center gap-3 px-4 sm:px-6 h-11 overflow-x-auto scrollbar-hide"
+      >
+        <StatsSummary />
+        <div className="ml-auto flex items-center gap-3 flex-shrink-0 pl-3">
+          <FilteredCount />
+          <CrawlControls />
+        </div>
       </div>
     </div>
   );

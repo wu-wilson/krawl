@@ -79,7 +79,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-bg-primary text-text-primary overflow-hidden">
+    <div className="flex flex-col h-svh bg-bg-primary text-text-primary overflow-hidden">
       <Navbar
         view={view}
         onViewChange={handleViewChange}

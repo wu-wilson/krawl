@@ -68,7 +68,7 @@ export const NodeDetail: React.FC = () => {
 
       {/* Desktop sidebar */}
       <div
-        className={`hidden lg:flex fixed top-14 right-0 bottom-0 w-[320px] z-40
+        className={`hidden lg:flex fixed top-[calc(3.5rem+env(safe-area-inset-top))] right-0 bottom-0 w-[320px] z-40
           flex-col bg-bg-primary border-l border-border
           transition-transform ease-out overflow-hidden
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
@@ -92,7 +92,7 @@ export const NodeDetail: React.FC = () => {
       {/* Mobile bottom sheet */}
       <div
         className={`lg:hidden fixed inset-x-0 bottom-0 z-40
-          h-[50vh] bg-bg-primary border-t border-border rounded-t-xl
+          h-[50dvh] bg-bg-primary border-t border-border rounded-t-xl
           transition-transform ease-out overflow-hidden
           ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
         style={{ transitionDuration: `${DURATION.normal}ms`, transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
@@ -175,7 +175,7 @@ const NodeDetailContent: React.FC<NodeDetailContentProps> = ({
       </div>
 
       {/* Body */}
-      <div className="flex-1 overflow-y-auto p-4 pb-8 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 pb-[calc(2rem+env(safe-area-inset-bottom))] space-y-4">
         {/* Status + HTTP Code */}
         <div className="flex items-center gap-2 flex-wrap">
           <span

@@ -30,7 +30,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   return (
     <div
-      className={`relative min-h-screen flex flex-col items-center justify-center
+      className={`relative min-h-dvh flex flex-col items-center justify-center
         bg-bg-primary overflow-hidden transition-opacity duration-200
         ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
     >

@@ -11,8 +11,8 @@ Mobile-first. Use Tailwind's default breakpoints: `sm` (640px), `md` (768px), `l
 
 ## Chrome
 
-- **Navbar (top chrome):** Spider logo always visible; "Krawl" wordmark hidden below `sm` (`hidden sm:inline`). The view switcher (Graph/Report) sits on the right at all breakpoints — inline text buttons below `md`, a pill toggle on `md:` and up. On `sm:` and up, Share and Export render as separate buttons; below `sm`, both collapse into a single overflow menu (three-dot icon).
-- **StatusBar (bottom chrome):** Persistent `h-11` strip with `border-t border-border bg-bg-primary` rendered for every non-landing view. `StatsSummary` left-aligned, read-only `FilteredCount` + `CrawlControls` right-aligned via `ml-auto`. Uses `overflow-x-auto scrollbar-hide` so the stats line scrolls horizontally on narrow viewports rather than wrapping.
+- **Navbar (top chrome):** Spider logo always visible; "Krawl" wordmark hidden below `sm` (`hidden sm:inline`). The view switcher (Graph/Report) sits on the right at all breakpoints — inline text buttons below `md`, a pill toggle on `md:` and up. On `sm:` and up, Share and Export render as separate buttons; below `sm`, both collapse into a single overflow menu (three-dot icon). Structure is a two-level wrapper: outer `<nav>` carries the border, background, and `pt-[env(safe-area-inset-top)]` so the bar grows under the notch on iPhones; inner `<div>` is the 56px (`h-14`) content row with `flex items-center justify-between`.
+- **StatusBar (bottom chrome):** Persistent `h-11` content row rendered for every non-landing view. `StatsSummary` left-aligned, read-only `FilteredCount` + `CrawlControls` right-aligned via `ml-auto`. Uses `overflow-x-auto scrollbar-hide` so the stats line scrolls horizontally on narrow viewports rather than wrapping. Same nested structure as Navbar: outer wrapper carries `border-t border-border bg-bg-primary pb-[env(safe-area-inset-bottom)]` so the bar grows above the home indicator; inner `h-11` row holds the content.
 
 ## Views
 
@@ -28,9 +28,11 @@ Mobile-first. Use Tailwind's default breakpoints: `sm` (640px), `md` (768px), `l
 ## Interactions & Detail Views
 
 - **Graph Canvas interaction:** On mobile, touch replaces mouse: pinch to zoom, single-finger drag to pan, tap to select a node.
-- **Node Detail Sidebar:** On desktop (`lg:` and up), slides in from the right as a 320px-wide side panel. On mobile and tablet (`< lg`), slides up from the bottom as a half-screen sheet (`h-[50vh]`) with `rounded-t-xl` and a drag handle. Dismissible by clicking outside (desktop) or pressing Escape.
+- **Node Detail Sidebar:** On desktop (`lg:` and up), slides in from the right as a 320px-wide side panel. On mobile and tablet (`< lg`), slides up from the bottom as a half-screen sheet (`h-[50dvh]`) with `rounded-t-xl` and a drag handle. Inner scrollable body uses `pb-[calc(2rem+env(safe-area-inset-bottom))]` so content clears the home indicator. Dismissible by clicking outside (desktop) or pressing Escape.
 - **Report Table:** Full table with all columns on desktop (`hidden md:block`). On mobile (`md:hidden`), switches to a card/list layout where each URL is a tappable card with status badge and response time.
 
 ## Global Rules
 
 Never allow horizontal overflow — use `overflow-x-hidden` on the html element. Touch targets must be at least 44x44px on mobile. Never go below `text-xs` (12px) for any primary text. The one exception is small inline unit suffixes that hang off a larger value (e.g., `text-[11px]` for the `ms`/`s` suffix in `StatCard.tsx`).
+
+**Viewport units:** Never use `h-screen` / `min-h-screen` (= `100vh`) for full-viewport layouts — on mobile browsers `100vh` is the *largest* viewport (URL bar collapsed) and pushes content below the visible fold. The app shell in `App.tsx` uses `h-svh` (smallest viewport — stable, avoids canvas resize jank from URL-bar animation re-heating the force simulation in `useGraph.ts`). The landing page uses `min-h-dvh` (dynamic viewport — fills available space). For notched-device support, `client/index.html` declares `viewport-fit=cover` and the Navbar/StatusBar use `env(safe-area-inset-*)` as documented in the Chrome section.
