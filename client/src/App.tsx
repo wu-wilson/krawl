@@ -87,20 +87,23 @@ export const App: React.FC = () => {
       />
       <div className="flex-1 relative overflow-hidden">
         <div
-          className={`absolute inset-0 transition-opacity duration-200 ${
+          className={`absolute inset-0 ${
             view === 'graph' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
           }`}
         >
           <GraphCanvas />
         </div>
         <div
-          className={`absolute inset-0 transition-opacity duration-200 overflow-auto ${
+          className={`absolute inset-0 overflow-auto ${
             view === 'report' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
           }`}
         >
           <ReportTable onSelectNode={handleViewChange} />
         </div>
-        <NodeDetail />
+        {/* Wrapped (not conditionally rendered) so NodeDetail's state survives view switches; display:none gives an instant hide with no animation. */}
+        <div className={view === 'graph' ? undefined : 'hidden'} aria-hidden={view !== 'graph'}>
+          <NodeDetail />
+        </div>
       </div>
       <StatusBar />
     </div>
