@@ -38,7 +38,6 @@ interface UseGraphReturn {
   handleMouseDown: (e: React.MouseEvent) => void;
   handleMouseMove: (e: React.MouseEvent) => void;
   handleMouseUp: (e: React.MouseEvent) => void;
-  handleWheel: (e: React.WheelEvent) => void;
   handleTouchStart: (e: React.TouchEvent) => void;
   handleTouchMove: (e: React.TouchEvent) => void;
   handleTouchEnd: (e: React.TouchEvent) => void;
@@ -450,6 +449,29 @@ export const useGraph = (): UseGraphReturn => {
     };
   }, [getStatusColor, selectedNodeId]);
 
+  // Wheel attached non-passively — React's onWheel is passive, so preventDefault would silently fail.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const scaleFactor = e.deltaY > 0 ? 0.92 : 1.08;
+      const newK = Math.max(0.1, Math.min(5, transformRef.current.k * scaleFactor));
+      const ratio = newK / transformRef.current.k;
+      transformRef.current.x = mx - ratio * (mx - transformRef.current.x);
+      transformRef.current.y = my - ratio * (my - transformRef.current.y);
+      transformRef.current.k = newK;
+      needsRedrawRef.current = true;
+    };
+
+    canvas.addEventListener('wheel', onWheel, { passive: false });
+    return () => canvas.removeEventListener('wheel', onWheel);
+  }, []);
+
   // Hit test
   const getNodeAtPosition = useCallback((clientX: number, clientY: number): SimNode | null => {
     const canvas = canvasRef.current;
@@ -515,25 +537,6 @@ export const useGraph = (): UseGraphReturn => {
     dragRef.current.active = false;
   }, []);
 
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-
-    const scaleFactor = e.deltaY > 0 ? 0.92 : 1.08;
-    const newK = Math.max(0.1, Math.min(5, transformRef.current.k * scaleFactor));
-    const ratio = newK / transformRef.current.k;
-
-    transformRef.current.x = mx - ratio * (mx - transformRef.current.x);
-    transformRef.current.y = my - ratio * (my - transformRef.current.y);
-    transformRef.current.k = newK;
-    needsRedrawRef.current = true;
-  }, []);
-
   const handleClick = useCallback((e: React.MouseEvent) => {
     const drag = dragRef.current;
     const moved = Math.abs(e.clientX - drag.startX) + Math.abs(e.clientY - drag.startY);
@@ -568,7 +571,6 @@ export const useGraph = (): UseGraphReturn => {
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    e.preventDefault();
     if (e.touches.length === 1 && dragRef.current.active) {
       const touch = e.touches[0];
       const dx = touch.clientX - dragRef.current.lastX;
@@ -612,7 +614,6 @@ export const useGraph = (): UseGraphReturn => {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-    handleWheel,
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,

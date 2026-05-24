@@ -19,7 +19,6 @@ export const GraphCanvas: React.FC = () => {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-    handleWheel,
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
@@ -39,16 +38,15 @@ export const GraphCanvas: React.FC = () => {
     <div className="relative w-full h-full">
       <canvas
         ref={canvasRef as React.RefObject<HTMLCanvasElement>}
-        className={`w-full h-full ${hoveredNodeId ? 'cursor-pointer' : 'cursor-grab'}`}
+        className={`w-full h-full touch-none select-none [-webkit-touch-callout:none] ${hoveredNodeId ? 'cursor-pointer' : 'cursor-grab'}`}
         role="img"
         aria-label={summaryLabel}
-        tabIndex={0}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        onWheel={handleWheel}
         onClick={handleClick}
+        onContextMenu={(e) => e.preventDefault()}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}

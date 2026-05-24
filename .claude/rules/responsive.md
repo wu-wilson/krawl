@@ -1,6 +1,7 @@
 ---
 paths:
   - "client/src/**/*.tsx"
+  - "client/src/**/*.css"
 ---
 
 # Responsive Design
@@ -27,7 +28,7 @@ Mobile-first. Use Tailwind's default breakpoints: `sm` (640px), `md` (768px), `l
 
 ## Interactions & Detail Views
 
-- **Graph Canvas interaction:** On mobile, touch replaces mouse: pinch to zoom, single-finger drag to pan, tap to select a node.
+- **Graph Canvas interaction:** On mobile, touch replaces mouse: pinch to zoom, single-finger drag to pan, tap to select a node. The canvas element declares `touch-none` so the browser hands every touch gesture to the canvas handlers — pinch does not zoom the page, single-finger drag does not scroll. Long-press contextmenu is suppressed via `select-none [-webkit-touch-callout:none]` on the canvas plus an `onContextMenu={(e) => e.preventDefault()}` handler (also kills the desktop right-click menu). Page-wide, `body { overscroll-behavior: none }` (applied via `overscroll-none` in `index.css`) blocks pull-to-refresh on iOS Safari / Android Chrome and two-finger trackpad swipe-back on macOS. Non-canvas UI (Navbar, StatusBar, NodeDetail) is intentionally left alone so pinch-zoom on text remains available for accessibility.
 - **Node Detail Sidebar:** On desktop (`lg:` and up), slides in from the right as a 320px-wide side panel. On mobile and tablet (`< lg`), slides up from the bottom as a half-screen sheet (`h-[50dvh]`) with `rounded-t-xl` and a drag handle. Inner scrollable body uses `pb-[calc(2rem+env(safe-area-inset-bottom))]` so content clears the home indicator. Dismissible by clicking outside (desktop) or pressing Escape.
 - **Report Table:** Full table with all columns on desktop (`hidden md:block`). On mobile (`md:hidden`), switches to a card/list layout where each URL is a tappable card with status badge and response time.
 
