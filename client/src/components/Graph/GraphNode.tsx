@@ -1,4 +1,4 @@
-/** @fileoverview Node and status rendering utilities for the graph canvas and UI components */
+/** @fileoverview Status color/style tables and the node-radius helper, shared between the Canvas graph and UI status badges */
 
 import type { NodeStatus } from '../../engine/types';
 

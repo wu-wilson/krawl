@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { SpiderLogo } from '../SpiderLogo';
 import { UrlInput } from '../UrlInput';
-import { AnimatedBackground } from './AnimatedBackground';
 
 interface LandingPageProps {
   /** Callback when a URL is submitted */
@@ -18,7 +17,8 @@ const EXAMPLE_URLS = [
 ];
 
 /**
- * Landing page with URL input and animated background
+ * Landing page — logo, tagline, URL input, and example chips on a flat dark surface,
+ * each row entering via a staggered CSS animation
  * @param props - Landing page configuration
  * @returns Full-screen landing page
  */
@@ -30,14 +30,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   return (
     <div
-      className={`relative min-h-dvh flex flex-col items-center justify-center
-        bg-bg-primary overflow-hidden transition-opacity duration-200
+      className={`min-h-dvh flex flex-col items-center justify-center
+        bg-bg-primary transition-opacity duration-200
         ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
     >
-      <AnimatedBackground />
-
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center px-6 sm:px-8 lg:px-10 max-w-lg w-full">
+      <div className="flex flex-col items-center px-6 sm:px-8 lg:px-10 max-w-lg w-full">
         {/* Logo + Wordmark */}
         <div
           className="flex items-center gap-2.5 mb-4 animate-landing-item cursor-default"
