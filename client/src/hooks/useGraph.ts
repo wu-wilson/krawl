@@ -41,6 +41,7 @@ interface UseGraphReturn {
   handleTouchStart: (e: React.TouchEvent) => void;
   handleTouchMove: (e: React.TouchEvent) => void;
   handleTouchEnd: (e: React.TouchEvent) => void;
+  handleTouchCancel: (e: React.TouchEvent) => void;
   handleClick: (e: React.MouseEvent) => void;
 }
 
@@ -59,8 +60,8 @@ export const useGraph = (): UseGraphReturn => {
   const dragRef = useRef<{ active: boolean; startX: number; startY: number; lastX: number; lastY: number; velX: number; velY: number }>({
     active: false, startX: 0, startY: 0, lastX: 0, lastY: 0, velX: 0, velY: 0,
   });
-  const pinchRef = useRef<{ active: boolean; initialDist: number; initialK: number }>({
-    active: false, initialDist: 0, initialK: 1,
+  const pinchRef = useRef<{ active: boolean; wasActive: boolean; initialDist: number; initialK: number }>({
+    active: false, wasActive: false, initialDist: 0, initialK: 1,
   });
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const hoveredRef = useRef<string | null>(null);
@@ -564,6 +565,7 @@ export const useGraph = (): UseGraphReturn => {
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       pinchRef.current = {
         active: true,
+        wasActive: true,
         initialDist: Math.sqrt(dx * dx + dy * dy),
         initialK: transformRef.current.k,
       };
@@ -607,7 +609,8 @@ export const useGraph = (): UseGraphReturn => {
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 0) {
-      if (dragRef.current.active) {
+      // Skip tap if this gesture pinched — pinch leaves dragRef coords stale, causing a false select.
+      if (dragRef.current.active && !pinchRef.current.wasActive) {
         const moved = Math.abs(dragRef.current.lastX - dragRef.current.startX) +
           Math.abs(dragRef.current.lastY - dragRef.current.startY);
         if (moved < 10) {
@@ -618,6 +621,7 @@ export const useGraph = (): UseGraphReturn => {
       }
       dragRef.current.active = false;
       pinchRef.current.active = false;
+      pinchRef.current.wasActive = false;
     } else if (e.touches.length === 1 && pinchRef.current.active) {
       // On 2→1 finger lift: re-seat dragRef to the remaining finger so the next pan doesn't jump from stale coords.
       const touch = e.touches[0];
@@ -629,6 +633,13 @@ export const useGraph = (): UseGraphReturn => {
     }
   }, [getNodeAtPosition, selectNode]);
 
+  // Reset gesture state when the browser preempts the touch (iOS system gesture, low-power interrupt, etc.).
+  const handleTouchCancel = useCallback(() => {
+    dragRef.current.active = false;
+    pinchRef.current.active = false;
+    pinchRef.current.wasActive = false;
+  }, []);
+
   return {
     canvasRef,
     hoveredNodeId,
@@ -638,6 +649,7 @@ export const useGraph = (): UseGraphReturn => {
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleTouchCancel,
     handleClick,
   };
 };

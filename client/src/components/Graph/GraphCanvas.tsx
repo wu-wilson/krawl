@@ -22,6 +22,7 @@ export const GraphCanvas: React.FC = () => {
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleTouchCancel,
     handleClick,
   } = useGraph();
 
@@ -50,6 +51,7 @@ export const GraphCanvas: React.FC = () => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchCancel}
       />
 
       {/* Empty / discovering state */}

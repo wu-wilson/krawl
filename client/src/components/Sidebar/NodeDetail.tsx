@@ -22,6 +22,7 @@ export const NodeDetail: React.FC = () => {
   const selectNode = useCrawlStore((s) => s.selectNode);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [displayNode, setDisplayNode] = useState<CrawlNode | undefined>(undefined);
   const [showHeaders, setShowHeaders] = useState(false);
   const [showInbound, setShowInbound] = useState(false);
   const [showOutbound, setShowOutbound] = useState(false);
@@ -29,13 +30,20 @@ export const NodeDetail: React.FC = () => {
 
   const node: CrawlNode | undefined = selectedNodeId ? nodes.get(selectedNodeId) : undefined;
 
+  // Keep displayNode populated through the close so the slide-out can play before the component unmounts.
   useEffect(() => {
     if (node) {
-      setIsOpen(true);
-      setTimeout(() => closeRef.current?.focus(), 100);
-    } else {
-      setIsOpen(false);
+      setDisplayNode(node);
+      const raf = requestAnimationFrame(() => setIsOpen(true));
+      const focusTimer = setTimeout(() => closeRef.current?.focus(), 100);
+      return () => {
+        cancelAnimationFrame(raf);
+        clearTimeout(focusTimer);
+      };
     }
+    setIsOpen(false);
+    const unmountTimer = setTimeout(() => setDisplayNode(undefined), DURATION.normal);
+    return () => clearTimeout(unmountTimer);
   }, [node]);
 
   const handleClose = useCallback(() => {
@@ -55,17 +63,10 @@ export const NodeDetail: React.FC = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handleClose]);
 
-  if (!node) return null;
+  if (!displayNode) return null;
 
   return (
     <>
-      {/* Backdrop - desktop only */}
-      <div
-        className={`hidden lg:block fixed inset-0 z-30 transition-opacity duration-200
-          ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={handleClose}
-      />
-
       {/* Desktop sidebar */}
       <div
         className={`hidden lg:flex fixed top-[calc(3.5rem+env(safe-area-inset-top))] right-0 bottom-0 w-[320px] z-40
@@ -77,7 +78,7 @@ export const NodeDetail: React.FC = () => {
         aria-label="Node details"
       >
         <NodeDetailContent
-          node={node}
+          node={displayNode}
           onClose={handleClose}
           closeRef={closeRef}
           showHeaders={showHeaders}
@@ -104,7 +105,7 @@ export const NodeDetail: React.FC = () => {
           <div className="w-10 h-1 rounded-full bg-bg-tertiary" />
         </div>
         <NodeDetailContent
-          node={node}
+          node={displayNode}
           onClose={handleClose}
           closeRef={closeRef}
           showHeaders={showHeaders}
