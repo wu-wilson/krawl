@@ -259,15 +259,17 @@ export const useGraph = (): UseGraphReturn => {
       ctx.fillStyle = CANVAS_COLORS.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Grid
-      const gridSize = 30;
+      // Grid — viewport spacing + dot radius track zoom so dots stay at fixed world positions
+      // (density and size relative to graph nodes are constant across zoom levels).
+      const gridSize = Math.max(10, 30 * transform.k);
       const gridOffsetX = transform.x % gridSize;
       const gridOffsetY = transform.y % gridSize;
+      const dotRadius = Math.max(0.3, Math.min(3, transform.k));
       ctx.fillStyle = CANVAS_COLORS.grid;
       for (let x = gridOffsetX; x < w; x += gridSize) {
         for (let y = gridOffsetY; y < h; y += gridSize) {
           ctx.beginPath();
-          ctx.arc(x, y, 1, 0, Math.PI * 2);
+          ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
           ctx.fill();
         }
       }
