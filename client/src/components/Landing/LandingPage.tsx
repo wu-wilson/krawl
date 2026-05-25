@@ -21,6 +21,15 @@ const EXAMPLE_URLS = [
 let hasPlayedEntrance = false;
 
 /**
+ * Mark the entrance as played without mounting the LandingPage — for App-level flows that
+ * bypass the landing (auto-start from a shared `?u=` link) or interrupt it (manual submit)
+ * so return visits via the Navbar logo still render the final state instantly.
+ */
+export const markEntrancePlayed = () => {
+  hasPlayedEntrance = true;
+};
+
+/**
  * Landing page — first mount plays the spider crawl + a synchronized fade-in for the rest;
  * return visits (via the Navbar logo) render the final state instantly.
  * @param props - Landing page configuration

@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useRef } from 'react';
 
-import { LandingPage } from './components/Landing/LandingPage';
+import { LandingPage, markEntrancePlayed } from './components/Landing/LandingPage';
 import { Navbar } from './components/Navbar';
 import { StatusBar } from './components/StatusBar';
 import { GraphCanvas } from './components/Graph/GraphCanvas';
@@ -37,12 +37,14 @@ export const App: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const seed = params.get('u');
     if (seed) {
+      markEntrancePlayed();
       setShowLanding(false);
       startCrawl(seed);
     }
   }, [startCrawl]);
 
   const handleStartCrawl = useCallback((url: string) => {
+    markEntrancePlayed();
     setIsTransitioning(true);
     setTimeout(() => {
       setShowLanding(false);
