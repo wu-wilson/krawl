@@ -129,11 +129,6 @@
   animation-delay: 0.1s;
 }
 
-/* Faster leg cadence used during the landing-page entrance crawl (paired with `.crawling`) */
-.spider-logo.crawling.crawling-fast .spider-leg {
-  animation-duration: 0.17s !important;
-}
-
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

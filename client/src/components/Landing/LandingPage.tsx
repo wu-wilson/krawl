@@ -39,8 +39,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const [shouldAnimate] = useState(() => !hasPlayedEntrance);
   const logoRef = useRef<HTMLDivElement>(null);
 
-  // Spider entrance via WAAPI. Keyframes sampled at uniform *arc length* (not uniform `t`) for
-  // constant linear speed; rotation = bezier tangent angle for direction-facing motion.
+  // Spider entrance via WAAPI. Keyframes sampled at uniform *arc length* (not uniform `t`)
+  // for predictable pacing; easing on top decelerates softly into the final position.
+  // Rotation at each sample = bezier tangent angle for direction-facing motion.
   useEffect(() => {
     const elem = logoRef.current;
     if (!elem) {
@@ -130,16 +131,49 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
     const animation = elem.animate(keyframes, {
       duration: 1500,
-      easing: 'linear',
+      easing: 'cubic-bezier(0.33, 0.33, 0.66, 1)',
       fill: 'forwards',
+    });
+
+    // Drive each leg with JS-computed keyframes: cycle duration ramps from fast → slow over
+    // the entrance, so legs visibly decelerate alongside the body. Amplitude is damped to 0
+    // in the last 20% so legs settle smoothly before CSS idle leg-wave takes over.
+    const legs = Array.from(elem.querySelectorAll<SVGPathElement>('.spider-leg'));
+    const TOTAL_MS = 1500;
+    const PHASE_SAMPLES = 60;
+    const START_CYCLE_MS = 110;
+    const END_CYCLE_MS = 500;
+    const dtMs = TOTAL_MS / PHASE_SAMPLES;
+
+    // Accumulated phase (in cycles) at each sample, integrating 1/cycle(t) over the timeline.
+    const phaseAt: number[] = [0];
+    for (let i = 1; i <= PHASE_SAMPLES; i++) {
+      const t = i / PHASE_SAMPLES;
+      const cycle = START_CYCLE_MS + (END_CYCLE_MS - START_CYCLE_MS) * t;
+      phaseAt.push(phaseAt[i - 1] + dtMs / cycle);
+    }
+
+    const legAnimations = legs.map((leg, idx) => {
+      const phaseOffset = idx % 2 === 1 ? 0.5 : 0; // alternate every other leg
+      const kfs = phaseAt.map((p, i) => {
+        const t = i / PHASE_SAMPLES;
+        const amp = t > 0.8 ? 8 * (1 - t) / 0.2 : 8;
+        const rotation = Math.sin((p + phaseOffset) * 2 * Math.PI) * amp;
+        return { transform: `rotate(${rotation}deg)`, offset: t };
+      });
+      return leg.animate(kfs, { duration: TOTAL_MS, easing: 'linear', fill: 'forwards' });
     });
 
     animation.onfinish = () => {
       hasPlayedEntrance = true;
+      legAnimations.forEach((a) => a.cancel());
       setPhase('arrived');
     };
 
-    return () => animation.cancel();
+    return () => {
+      animation.cancel();
+      legAnimations.forEach((a) => a.cancel());
+    };
   }, []);
 
   const isCrawling = phase === 'entering' || logoHovered;
@@ -162,7 +196,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             ref={logoRef}
             size={44}
             crawling={isCrawling}
-            className={phase === 'entering' ? 'opacity-0 crawling-fast' : ''}
+            className={phase === 'entering' ? 'opacity-0' : ''}
           />
           <span
             className={`text-2xl font-semibold text-text-primary tracking-tight${shouldAnimate ? ' animate-landing-from-left' : ''}`}

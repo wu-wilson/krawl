@@ -14,7 +14,7 @@ Krawl is a visual website crawler and health scanner. The user enters a URL, the
 - Canvas rendering instead of SVG — required for smooth performance at 200 nodes.
 - Dark mode only — no theme toggle, no `dark:` prefixes. CSS custom properties on `:root`.
 - Brand color is Muted Amber (`#d4a017`).
-- The spider logo's idle and crawling cycles use CSS `@keyframes`; the landing-page entrance trajectory is driven by JS via WAAPI.
+- The spider logo's idle and hover-crawling cycles use CSS `@keyframes`; the landing-page entrance (both body trajectory and leg motion) is driven by JS via WAAPI.
 - Animation is a first-class concern — nothing should snap, everything eases.
 - The crawl engine enforces hard caps (6 concurrent, depth 3, 200 URLs max). No user-facing settings.
 - Five node statuses: `queued`, `pending`, `healthy`, `redirect`, `broken`. No separate `error` status — 4xx, 5xx, and failed requests are all `broken`.
