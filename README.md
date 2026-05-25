@@ -1,6 +1,6 @@
 ## ⚡ Overview
 
-**Krawly** crawls any website and visualizes its structure as a live force-directed graph. Each page becomes a node, color-coded by HTTP status, so broken links, redirects, and errors surface immediately.
+[**Krawly**](https://krawly.dev) crawls any website and visualizes its structure as a live force-directed graph. Each page becomes a node, color-coded by HTTP status, so broken links, redirects, and errors surface immediately.
 
 ## 🔭 Architecture
 
