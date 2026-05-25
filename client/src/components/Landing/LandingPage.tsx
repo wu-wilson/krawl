@@ -196,7 +196,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             ref={logoRef}
             size={44}
             crawling={isCrawling}
-            className={phase === 'entering' ? 'opacity-0' : ''}
+            className={phase === 'entering' ? 'opacity-0 js-legs' : ''}
           />
           <span
             className={`text-2xl font-semibold text-text-primary tracking-tight${shouldAnimate ? ' animate-landing-from-left' : ''}`}

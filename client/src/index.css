@@ -129,6 +129,12 @@
   animation-delay: 0.1s;
 }
 
+/* Suppress CSS leg animations during the JS-driven landing-page entrance so WAAPI is the
+   sole driver — prevents a transform "snap" when the WAAPI effect is canceled at the end. */
+.spider-logo.js-legs .spider-leg {
+  animation: none !important;
+}
+
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
