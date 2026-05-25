@@ -61,7 +61,7 @@ Five statuses — no separate `error` status. 4xx and 5xx are both `broken`.
 - Amber body and 6 legs, white eyes with dark pupils.
 - Sizes: 36px (navbar), 44px (landing page).
 - Animation states: idle (gentle leg wave), crawling (active walk cycle).
-- All animations use CSS `@keyframes` in `index.css`, not JavaScript.
+- The idle leg-wave and crawling cycle use CSS `@keyframes` in `index.css`. The landing-page entrance trajectory is driven by JS via the Web Animations API (see `LandingPage.tsx`).
 
 ## Animation Constants (from `utils/animations.ts`)
 

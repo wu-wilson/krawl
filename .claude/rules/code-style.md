@@ -13,7 +13,7 @@ paths:
 
 ## React Components
 
-- Functional components only, using `const` arrow functions with `React.FC<Props>`.
+- Functional components only — `const` arrow functions with `React.FC<Props>`, or `React.forwardRef<RefType, Props>` when a parent needs a DOM ref. Set `displayName` on any `forwardRef` component for clearer devtools.
 - Props interfaces are named `{ComponentName}Props` and defined directly above the component.
 - If a component exceeds ~150 lines, extract sub-components or custom hooks.
 - Extract hooks when logic exceeds ~20 lines or is reused across components.

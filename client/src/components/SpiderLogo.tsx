@@ -14,13 +14,14 @@ interface SpiderLogoProps {
  * @param props - Logo configuration
  * @returns Animated spider SVG
  */
-export const SpiderLogo: React.FC<SpiderLogoProps> = ({
+export const SpiderLogo = React.forwardRef<HTMLDivElement, SpiderLogoProps>(({
   size = 48,
   crawling = false,
   className = '',
-}) => {
+}, ref) => {
   return (
     <div
+      ref={ref}
       className={`spider-logo inline-flex items-center justify-center ${crawling ? 'crawling' : ''} ${className}`}
       style={{ width: size, height: size }}
     >
@@ -60,4 +61,6 @@ export const SpiderLogo: React.FC<SpiderLogoProps> = ({
       </svg>
     </div>
   );
-};
+});
+
+SpiderLogo.displayName = 'SpiderLogo';
