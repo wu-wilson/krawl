@@ -9,8 +9,7 @@ import type { CrawlNode, CrawlEdge, NodeStatus } from '../engine/types';
 
 const CANVAS_COLORS = {
   bg: '#111114',
-  grid: 'rgba(255, 255, 255, 0.025)',
-  edgeDefault: 'rgba(255, 255, 255, 0.1)',
+  grid: 'rgba(255, 255, 255, 0.12)',
   edgeHighlight: 'rgba(212, 160, 23, 0.4)',
   brand: '#d4a017',
   glow: 0.35,
@@ -262,13 +261,13 @@ export const useGraph = (): UseGraphReturn => {
 
       // Grid
       const gridSize = 30;
-      const gridOffsetX = (transform.x * 0.5) % gridSize;
-      const gridOffsetY = (transform.y * 0.5) % gridSize;
+      const gridOffsetX = transform.x % gridSize;
+      const gridOffsetY = transform.y % gridSize;
       ctx.fillStyle = CANVAS_COLORS.grid;
       for (let x = gridOffsetX; x < w; x += gridSize) {
         for (let y = gridOffsetY; y < h; y += gridSize) {
           ctx.beginPath();
-          ctx.arc(x, y, 0.7, 0, Math.PI * 2);
+          ctx.arc(x, y, 1, 0, Math.PI * 2);
           ctx.fill();
         }
       }

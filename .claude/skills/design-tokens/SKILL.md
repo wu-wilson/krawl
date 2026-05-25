@@ -54,7 +54,7 @@ Five statuses — no separate `error` status. 4xx and 5xx are both `broken`.
 
 - Minimum radius: 4px, maximum radius: 16px. Size scales with inbound link count (`getNodeRadius` in `GraphNode.tsx`).
 - Shape: all nodes are circles. Resource types are distinguished via filters, not shape.
-- Canvas background: `#111114`, grid dots: `rgba(255, 255, 255, 0.025)`, default edge: `rgba(255, 255, 255, 0.1)` (all in `hooks/useGraph.ts`).
+- Canvas background: `#111114`, grid dots: `rgba(255, 255, 255, 0.12)` at 30px spacing, 1px radius (Railway-style backdrop). Edges use `rgba(255, 255, 255, alpha)` with `alpha = 0.2` (default) or `0.03` (dimmed when a non-connected node is hovered); highlighted edges use `rgba(212, 160, 23, 0.4)`. All in `hooks/useGraph.ts`.
 
 ## Spider Logo
 
