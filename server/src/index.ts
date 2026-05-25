@@ -23,7 +23,7 @@ app.use(createRateLimiter());
 
 // Health check
 app.get('/', (_req, res) => {
-  res.json({ status: 'ok', service: 'krawl-proxy' });
+  res.json({ status: 'ok', service: 'krawly-proxy' });
 });
 
 // Routes
@@ -32,5 +32,5 @@ app.get('/head', validateUrl, headHandler);
 
 // Start
 app.listen(PORT, () => {
-  console.log(`🕷️ Krawl proxy server running on port ${PORT}`);
+  console.log(`🕷️ Krawly proxy server running on port ${PORT}`);
 });

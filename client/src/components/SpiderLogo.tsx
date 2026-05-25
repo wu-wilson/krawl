@@ -10,7 +10,7 @@ interface SpiderLogoProps {
 }
 
 /**
- * Animated SVG spider logo — Krawl's brand mascot
+ * Animated SVG spider logo — Krawly's brand mascot
  * @param props - Logo configuration
  * @returns Animated spider SVG
  */
@@ -31,7 +31,7 @@ export const SpiderLogo = React.forwardRef<HTMLDivElement, SpiderLogoProps>(({
         height={size}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        aria-label="Krawl spider logo"
+        aria-label="Krawly spider logo"
         role="img"
       >
         {/* Legs - left side (3) */}

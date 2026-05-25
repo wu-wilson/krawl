@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Launches both the Krawl server and client for local development.
+# Launches both the Krawly server and client for local development.
 
 set -e
 

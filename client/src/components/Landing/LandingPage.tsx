@@ -211,7 +211,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             className={`text-2xl font-semibold text-text-primary tracking-tight${shouldAnimate ? ' animate-landing-from-left' : ''}`}
             style={shouldAnimate ? { animationDelay: '1500ms' } : undefined}
           >
-            Krawl
+            Krawly
           </span>
         </div>
 

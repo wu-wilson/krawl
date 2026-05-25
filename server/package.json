@@ -1,7 +1,7 @@
 {
-  "name": "krawl-server",
+  "name": "krawly-server",
   "version": "1.0.0",
-  "description": "Krawl CORS proxy server",
+  "description": "Krawly CORS proxy server",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",

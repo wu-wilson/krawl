@@ -123,7 +123,7 @@ export const UrlInput: React.FC<UrlInputProps> = ({
             ${large ? 'px-6 py-3 text-sm' : 'px-5 py-2.5 text-sm'}`}
           style={{ transitionDuration: `${DURATION.fast}ms` }}
         >
-          Krawl
+          Krawly
         </button>
       </div>
       {error && touched && (

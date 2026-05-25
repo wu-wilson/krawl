@@ -55,7 +55,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       const blob = new Blob([JSON.stringify({ nodes: nodesArr, edges, startUrl })], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'krawl-results.json';
+      a.download = 'krawly-results.json';
       a.click();
       URL.revokeObjectURL(a.href);
     }
@@ -83,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <SpiderLogo size={36} crawling={isCrawling} />
           <span className="hidden sm:inline text-lg font-semibold text-text-primary tracking-tight select-none">
-            Krawl
+            Krawly
           </span>
         </button>
 

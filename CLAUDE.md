@@ -1,13 +1,13 @@
-# CLAUDE.md — Krawl
+# CLAUDE.md — Krawly
 
 ## What This Is
 
-Krawl is a visual website crawler and health scanner. The user enters a URL, the app crawls the site in real time, and every discovered page, resource, and endpoint is rendered as a node in an animated force-directed graph — color-coded by HTTP status.
+Krawly is a visual website crawler and health scanner. The user enters a URL, the app crawls the site in real time, and every discovered page, resource, and endpoint is rendered as a node in an animated force-directed graph — color-coded by HTTP status.
 
 ## Architecture
 
 - **client/** — React 18 + Vite + TypeScript. Tailwind CSS v3. D3.js force simulation rendered on HTML5 Canvas. Zustand for state management. All crawl logic runs client-side.
-- **server/** — Express + TypeScript CORS proxy. Two proxy endpoints — `/fetch` (full page with body) and `/head` (status check only) — plus a `/` health check that returns `{ status: 'ok', service: 'krawl-proxy' }`. Stateless — no database, no auth. Outbound fetches are guarded against SSRF: hostnames are resolved and rejected unless every IP is public unicast, and redirects are followed manually so each hop is re-validated (see `src/security/`).
+- **server/** — Express + TypeScript CORS proxy. Two proxy endpoints — `/fetch` (full page with body) and `/head` (status check only) — plus a `/` health check that returns `{ status: 'ok', service: 'krawly-proxy' }`. Stateless — no database, no auth. Outbound fetches are guarded against SSRF: hostnames are resolved and rejected unless every IP is public unicast, and redirects are followed manually so each hop is re-validated (see `src/security/`).
 
 ## Key Decisions
 

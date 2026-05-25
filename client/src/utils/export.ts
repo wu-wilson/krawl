@@ -40,7 +40,7 @@ export const exportCsv = (nodes: CrawlNode[]): void => {
 
   const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
 
-  triggerDownload('krawl-export.csv', csvContent, 'text/csv;charset=utf-8');
+  triggerDownload('krawly-export.csv', csvContent, 'text/csv;charset=utf-8');
 };
 
 /**
@@ -52,5 +52,5 @@ export const exportCsv = (nodes: CrawlNode[]): void => {
 export const exportJson = (nodes: CrawlNode[], edges: CrawlEdge[]): void => {
   const data = { nodes, edges, exportedAt: new Date().toISOString() };
   const jsonContent = JSON.stringify(data, null, 2);
-  triggerDownload('krawl-export.json', jsonContent, 'application/json');
+  triggerDownload('krawly-export.json', jsonContent, 'application/json');
 };
