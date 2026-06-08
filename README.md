@@ -61,7 +61,7 @@ The script installs dependencies on first run, then starts the proxy server on p
 
 ## ☁️ Deployment
 
-Deployed on [Railway](https://railway.app). The client ships as a static build. The proxy server runs as a separate service.
+Deployed on [Railway](https://railway.app). The client ships as a static build. The proxy server runs as a separate service. DNS via [Cloudflare](https://www.cloudflare.com).
 
 ## ⚙️ Configuration
 
@@ -82,6 +82,6 @@ All variables ship with working defaults — `./launch.sh` runs on a fresh clone
 | ----------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `PORT`                  | `3001`    | Port the proxy listens on. Railway auto-injects this, so it's rarely set manually in production.                                  |
 | `REQUEST_TIMEOUT_MS`    | `10000`   | Per-request timeout for outbound fetches, in milliseconds. The client mirrors this in `crawler.ts` — the two should stay in sync. |
-| `MAX_BODY_SIZE_BYTES`   | `5242880` | Max response body size accepted from a target site, in bytes (5 MB). Larger responses are truncated.                              |
+| `MAX_BODY_SIZE_BYTES`   | `2097152` | Max response body size accepted from a target site, in bytes (2 MB). Larger responses are truncated.                              |
 | `RATE_LIMIT_PER_MINUTE` | `1000`    | Max requests per IP per minute. Excess requests receive a `429`.                                                                  |
 | `ALLOWED_ORIGINS`       | `*`       | Comma-separated list of allowed CORS origins. Set to `https://krawly.dev` in production (`www.krawly.dev` forwards to the apex).    |
