@@ -46,7 +46,7 @@ Five statuses — no separate `error` status. 4xx and 5xx are both `broken`.
 
 ## Typography
 
-- UI font: "Inter" from Google Fonts. Fallback: system-ui, sans-serif.
+- UI font: "Space Grotesk" from Google Fonts. Fallback: system-ui, sans-serif.
 - Monospace: "JetBrains Mono" from Google Fonts. Fallback: monospace.
 - Scale: body text at `text-sm` (14px), headings at `text-lg` to `text-2xl`, data at `text-xs` to `text-sm`.
 
