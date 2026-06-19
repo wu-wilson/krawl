@@ -120,7 +120,7 @@ export const FilterChips: React.FC = () => {
         placeholder="Search URLs..."
         className="ml-auto w-48 sm:w-64 flex-shrink-0 px-3 py-1.5 text-xs rounded-md
           bg-bg-secondary border border-border text-text-primary placeholder:text-text-tertiary
-          focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand
+          focus:outline-none focus:ring-2 focus:ring-brand/50
           transition-all duration-150 ease-out"
         aria-label="Search URLs"
       />

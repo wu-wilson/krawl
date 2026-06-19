@@ -96,7 +96,7 @@ export const UrlInput: React.FC<UrlInputProps> = ({
             placeholder="Enter a URL..."
             className={`w-full rounded-lg transition-all ease-out
               bg-bg-secondary border text-text-primary placeholder:text-text-tertiary
-              focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand
+              focus:outline-none focus:ring-2 focus:ring-brand/50
               disabled:opacity-50 disabled:cursor-not-allowed
               ${large ? 'px-4 py-3 text-sm' : 'px-4 py-2.5 text-sm'}
               ${error && touched ? 'border-status-broken' : 'border-border'}`}
@@ -117,7 +117,7 @@ export const UrlInput: React.FC<UrlInputProps> = ({
           }}
           className={`rounded-lg bg-brand font-medium text-white
             hover:brightness-110 active:scale-[0.97]
-            focus:outline-none focus:ring-2 focus:ring-brand/30
+            focus:outline-none focus:ring-2 focus:ring-brand/50
             disabled:opacity-40 disabled:cursor-not-allowed
             transition-all ease-out whitespace-nowrap
             ${large ? 'px-6 py-3 text-sm' : 'px-5 py-2.5 text-sm'}`}

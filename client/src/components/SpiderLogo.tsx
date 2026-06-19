@@ -35,17 +35,17 @@ export const SpiderLogo = React.forwardRef<HTMLDivElement, SpiderLogoProps>(({
         role="img"
       >
         {/* Legs - left side (3) */}
-        <path className="spider-leg leg-1" d="M38 38 Q28 31 20 28" stroke="var(--brand)" strokeWidth="3.6" strokeLinecap="round" />
-        <path className="spider-leg leg-2" d="M36 50 Q23 50 14 50" stroke="var(--brand)" strokeWidth="3.6" strokeLinecap="round" />
-        <path className="spider-leg leg-3" d="M38 62 Q28 69 20 74" stroke="var(--brand)" strokeWidth="3.6" strokeLinecap="round" />
+        <path className="spider-leg leg-1" d="M38 38 Q28 31 20 28" stroke="rgb(var(--brand))" strokeWidth="3.6" strokeLinecap="round" />
+        <path className="spider-leg leg-2" d="M36 50 Q23 50 14 50" stroke="rgb(var(--brand))" strokeWidth="3.6" strokeLinecap="round" />
+        <path className="spider-leg leg-3" d="M38 62 Q28 69 20 74" stroke="rgb(var(--brand))" strokeWidth="3.6" strokeLinecap="round" />
 
         {/* Legs - right side (3) */}
-        <path className="spider-leg leg-4" d="M62 38 Q72 31 80 28" stroke="var(--brand)" strokeWidth="3.6" strokeLinecap="round" />
-        <path className="spider-leg leg-5" d="M64 50 Q77 50 86 50" stroke="var(--brand)" strokeWidth="3.6" strokeLinecap="round" />
-        <path className="spider-leg leg-6" d="M62 62 Q72 69 80 74" stroke="var(--brand)" strokeWidth="3.6" strokeLinecap="round" />
+        <path className="spider-leg leg-4" d="M62 38 Q72 31 80 28" stroke="rgb(var(--brand))" strokeWidth="3.6" strokeLinecap="round" />
+        <path className="spider-leg leg-5" d="M64 50 Q77 50 86 50" stroke="rgb(var(--brand))" strokeWidth="3.6" strokeLinecap="round" />
+        <path className="spider-leg leg-6" d="M62 62 Q72 69 80 74" stroke="rgb(var(--brand))" strokeWidth="3.6" strokeLinecap="round" />
 
         {/* Body */}
-        <circle className="spider-body" cx="50" cy="50" r="22" fill="var(--brand)" />
+        <circle className="spider-body" cx="50" cy="50" r="22" fill="rgb(var(--brand))" />
 
         {/* Eyes */}
         <circle cx="42.2" cy="45.5" r="7.8" fill="white" />

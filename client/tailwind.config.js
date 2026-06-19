@@ -1,37 +1,41 @@
 /** @type {import('tailwindcss').Config} */
+
+/** Reference a channel-based CSS custom property so Tailwind opacity modifiers resolve. */
+const ch = (name) => `rgb(var(${name}) / <alpha-value>)`;
+
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
         brand: {
-          DEFAULT: 'var(--brand)',
-          light: 'var(--brand-light)',
-          dark: 'var(--brand-dark)',
+          DEFAULT: ch('--brand'),
+          light: ch('--brand-light'),
+          dark: ch('--brand-dark'),
           subtle: 'var(--brand-subtle)',
         },
         bg: {
-          primary: 'var(--bg-primary)',
-          secondary: 'var(--bg-secondary)',
-          tertiary: 'var(--bg-tertiary)',
+          primary: ch('--bg-primary'),
+          secondary: ch('--bg-secondary'),
+          tertiary: ch('--bg-tertiary'),
         },
         border: {
-          DEFAULT: 'var(--border-color)',
-          subtle: 'var(--border-subtle)',
+          DEFAULT: ch('--border-color'),
+          subtle: ch('--border-subtle'),
         },
         text: {
-          primary: 'var(--text-primary)',
-          secondary: 'var(--text-secondary)',
-          tertiary: 'var(--text-tertiary)',
+          primary: ch('--text-primary'),
+          secondary: ch('--text-secondary'),
+          tertiary: ch('--text-tertiary'),
         },
         surface: {
-          hover: 'var(--surface-hover)',
+          hover: ch('--surface-hover'),
         },
         status: {
-          healthy: 'var(--status-healthy)',
-          redirect: 'var(--status-redirect)',
-          broken: 'var(--status-broken)',
-          pending: 'var(--status-pending)',
+          healthy: ch('--status-healthy'),
+          redirect: ch('--status-redirect'),
+          broken: ch('--status-broken'),
+          pending: ch('--status-pending'),
         },
       },
       fontFamily: {

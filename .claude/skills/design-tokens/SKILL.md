@@ -8,7 +8,7 @@ user-invocable: true
 
 Reference file for exact color values, typography, and animation constants used in the codebase. For rules about how to apply these, see `.claude/rules/styling.md`.
 
-Source of truth: CSS custom properties in `client/src/index.css`. Canvas-specific hex values live in two places (Canvas can't read CSS vars): node status colors in `client/src/components/Graph/GraphNode.tsx` (`NODE_STATUS_COLORS`), and Canvas background, grid dots, and edge colors in `client/src/hooks/useGraph.ts`.
+Source of truth: CSS custom properties in `client/src/index.css`, stored as space-separated RGB channels (e.g. `--brand: 212 160 23;`, hex in comments) and consumed via `rgb(var(--token) / <alpha-value>)` in `tailwind.config.js` so opacity modifiers like `ring-brand/50` resolve. New tokens follow this format; direct `var(--token)` uses (e.g. SVG `fill`/`stroke`) must wrap as `rgb(var(--token))`. The hex values listed below stay authoritative. Canvas-specific hex values live in two places (Canvas can't read CSS vars): node status colors in `client/src/components/Graph/GraphNode.tsx` (`NODE_STATUS_COLORS`), and Canvas background, grid dots, and edge colors in `client/src/hooks/useGraph.ts`.
 
 ## Brand Colors
 

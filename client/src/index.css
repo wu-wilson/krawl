@@ -6,28 +6,31 @@
 @tailwind utilities;
 
 :root {
-  --brand: #d4a017;
-  --brand-light: #e5b836;
-  --brand-dark: #b8860b;
-  --brand-subtle: rgba(212, 160, 23, 0.08);
+  /* Stored as space-separated RGB channels (hex in comments) and consumed via
+     `rgb(var(--token) / <alpha-value>)` in tailwind.config.js, so opacity modifiers
+     like `ring-brand/50` resolve correctly. */
+  --brand: 212 160 23;           /* #d4a017 */
+  --brand-light: 229 184 54;     /* #e5b836 */
+  --brand-dark: 184 134 11;      /* #b8860b */
+  --brand-subtle: rgba(212, 160, 23, 0.08); /* pre-baked alpha; used without a modifier */
 
-  --bg-primary: #111114;
-  --bg-secondary: #1a1a1e;
-  --bg-tertiary: #232328;
+  --bg-primary: 17 17 20;        /* #111114 */
+  --bg-secondary: 26 26 30;      /* #1a1a1e */
+  --bg-tertiary: 35 35 40;       /* #232328 */
 
-  --border-color: #2e2e34;
-  --border-subtle: #232328;
+  --border-color: 46 46 52;      /* #2e2e34 */
+  --border-subtle: 35 35 40;     /* #232328 */
 
-  --text-primary: #ececee;
-  --text-secondary: #8b8b96;
-  --text-tertiary: #5c5c66;
+  --text-primary: 236 236 238;   /* #ececee */
+  --text-secondary: 139 139 150; /* #8b8b96 */
+  --text-tertiary: 92 92 102;    /* #5c5c66 */
 
-  --surface-hover: #232328;
+  --surface-hover: 35 35 40;     /* #232328 */
 
-  --status-healthy: #34d399;
-  --status-redirect: #34d399;
-  --status-broken: #f87171;
-  --status-pending: #d4a017;
+  --status-healthy: 52 211 153;  /* #34d399 */
+  --status-redirect: 52 211 153; /* #34d399 */
+  --status-broken: 248 113 113;  /* #f87171 */
+  --status-pending: 212 160 23;  /* #d4a017 */
 }
 
 /* Base styles */
