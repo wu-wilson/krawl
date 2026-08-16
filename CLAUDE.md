@@ -18,6 +18,7 @@ Krawly is a visual website crawler and health scanner. The user enters a URL, th
 - Animation is a first-class concern — nothing should snap, everything eases.
 - The crawl engine enforces hard caps (6 concurrent, depth 3, 200 URLs max). No user-facing settings.
 - Five node statuses: `queued`, `pending`, `healthy`, `redirect`, `broken`. No separate `error` status — 4xx, 5xx, and failed requests are all `broken`.
+- Crawlers are blocked from every query-string URL (`client/public/robots.txt`) — `?u=` auto-starts a crawl on load, so a bot rendering a shared link drives real proxy traffic at a third-party site. No param yields distinct indexable content anyway.
 
 ## Do NOT
 
